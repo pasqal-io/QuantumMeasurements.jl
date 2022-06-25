@@ -1,6 +1,11 @@
 name = "Sniper"
 uuid = "81691e93-b409-492d-a237-cd8ca34c3e3f"
-authors = ["Niklas Heim <heim.niklas@gmail.com>"]
+authors = [
+	"Mario Dagrada <mario.dagrada@pasqal.com>",
+	"Sebastian Grijalva <sebastian.grijalva@pasqal.com>",
+	"Niklas Heim <heim.niklas@gmail.com>",
+	"Louis Vignoli <louis.vignoli@pasqal.com>",
+]
 version = "0.1.0"
 
 [compat]

@@ -5,7 +5,12 @@ DocMeta.setdocmeta!(Sniper, :DocTestSetup, :(using Sniper); recursive=true)
 
 makedocs(;
     modules=[Sniper],
-    authors="Niklas Heim <heim.niklas@gmail.com>",
+    authors=[
+        "Mario Dagrada <mario.dagrada@pasqal.com>",
+        "Sebastian Grijalva <sebastian.grijalva@pasqal.com>",
+        "Niklas Heim <heim.niklas@gmail.com>",
+        "Louis Vignoli <louis.vignoli@pasqal.com>",
+    ],
     repo="https://github.com/pasqal-io/Sniper.jl/blob/{commit}{path}#{line}",
     sitename="Sniper.jl",
     format=Documenter.HTML(;
