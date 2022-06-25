@@ -22,4 +22,5 @@ makedocs(;
 deploydocs(;
     repo="github.com/pasqal-io/Sniper.jl",
     devbranch="main",
+    push_preview=true
 )
