@@ -6,7 +6,7 @@ DocMeta.setdocmeta!(Sniper, :DocTestSetup, :(using Sniper); recursive=true)
 makedocs(;
     modules=[Sniper],
     authors="Niklas Heim <heim.niklas@gmail.com>",
-    repo="https://github.com/pasqal/Sniper.jl/blob/{commit}{path}#{line}",
+    repo="https://github.com/pasqal-io/Sniper.jl/blob/{commit}{path}#{line}",
     sitename="Sniper.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
