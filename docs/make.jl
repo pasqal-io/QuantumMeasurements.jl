@@ -10,7 +10,7 @@ makedocs(;
     sitename="Sniper.jl",
     format=Documenter.HTML(;
         prettyurls=get(ENV, "CI", "false") == "true",
-        canonical="https://pasqal.github.io/Sniper.jl",
+        canonical="https://pasqal-io.github.io/Sniper.jl",
         edit_link="main",
         assets=String[],
     ),
@@ -20,6 +20,6 @@ makedocs(;
 )
 
 deploydocs(;
-    repo="github.com/pasqal/Sniper.jl",
+    repo="github.com/pasqal-io/Sniper.jl",
     devbranch="main",
 )
