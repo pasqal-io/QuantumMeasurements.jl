@@ -7,7 +7,7 @@ makedocs(;
     modules=[Sniper],
     authors="Mario Dagrada <mario.dagrada@pasqal.com>, " *
             "Sebastian Grijalva <sebastian.grijalva@pasqal.com>, " *
-            "Niklas Heim <heim.niklas@gmail.com>, " *
+            "Niklas Heim <heim.niklas@pasqal.com>, " *
             "Louis Vignoli <louis.vignoli@pasqal.com>",
     repo="https://github.com/pasqal-io/Sniper.jl/blob/{commit}{path}#{line}",
     sitename="Sniper.jl",
