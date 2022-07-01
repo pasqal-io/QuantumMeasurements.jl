@@ -1,4 +1,4 @@
-# Sniper.jl
+# QuantumMeasurements.jl
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://pasqal-io.github.io/Sniper.jl/stable/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://pasqal-io.github.io/Sniper.jl/dev/)
