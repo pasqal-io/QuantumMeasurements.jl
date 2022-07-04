@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = Sniper
+CurrentModule = QuantumMeasurements
 ```
 
-# Sniper
+# QuantumMeasurements
 
-Documentation for [Sniper](https://github.com/pasqal-io/Sniper.jl).
+Documentation for [QuantumMeasurements](https://github.com/pasqal-io/QuantumMeasurements.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [Sniper]
+Modules = [QuantumMeasurements]
 ```
