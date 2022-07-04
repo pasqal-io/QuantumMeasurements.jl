@@ -25,5 +25,4 @@ makedocs(;
 deploydocs(;
     repo="github.com/pasqal-io/QuantumMeasurements.jl",
     devbranch="main",
-    push_preview=true
 )
