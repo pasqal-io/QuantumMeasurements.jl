@@ -1,6 +1,6 @@
-using Sniper
+using QuantumMeasurements
 using Test
 
-@testset "Sniper.jl" begin
-    @test Sniper.hello() == 1
+@testset "QuantumMeasurements.jl" begin
+    @test QuantumMeasurements.hello() == 1
 end
