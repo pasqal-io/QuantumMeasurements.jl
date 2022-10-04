@@ -6,4 +6,17 @@
 [![Coverage](https://codecov.io/gh/pasqal-io/QuantumMeasurements.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/pasqal-io/QuantumMeasurements.jl)
 
 
-Randomized Measurements Toolbox in Julia
+Quantum Measurement Toolbox in Julia. Currently it offers the
+following estimators:
+
+* derandomization
+* standard quantum state tomography
+
+For starting the tutorial, go into the `docs/` folder and, from
+the Julia REPL, execute the following commands:
+
+```
+julia> import Pluto; Pluto.run()
+```
+
+Then open the `tutorial.jl` notebook from the browser.
