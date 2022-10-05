@@ -19,6 +19,7 @@
     block = chain(3.1 * kron(X, Y), put(1 => H), -0.3 * kron(Z, Z))
     apply!(block, s)
     ```
+
   - `observables::Set{String}`: the set of Pauli string observables for which we estimate the
     expectation values in `state`.
   - `precision::Float64`: the approximate additive error of the predicitons with respect to
@@ -75,6 +76,7 @@ that is ϵ accurate with a probability of at least δ.
     block = chain(3.1 * kron(X, Y), put(1 => H), -0.3 * kron(Z, Z))
     apply!(block, s)
     ```
+
   - `observables::Set{String}`: the set of Pauli string observables for which we estimate the
     expectation values in `state`.
   - `precision::Float64`: the approximate additive error of the predicitons with respect to

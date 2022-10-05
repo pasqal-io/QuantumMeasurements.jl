@@ -247,7 +247,7 @@ function observables_bit_strings(observables::Set{String})::Set{Array{Int}}
         # contribute to the inverse channel whether it is 0 or 1, so, after
         # setting the bits in the same poistion as I to 0, we generate all the
         # possibilities for the other positions.
-        bit = bitarray(collect(0:(2^k - 1)), k) 
+        bit = bitarray(collect(0:(2^k - 1)), k)
         for z = 1:(2^k)
             for j = 1:k
                 if bit[j, z]

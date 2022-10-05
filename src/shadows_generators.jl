@@ -13,6 +13,7 @@ Return an array of `R` classical shadows of `state` that can be used to estimate
     block = chain(3.1 * kron(X, Y), put(1 => H), -0.3 * kron(Z, Z))
     apply!(block, s)
     ```
+
   - `R::Int` : the desired number of classical shadows.
 
 # Keywords
@@ -53,6 +54,7 @@ See formal version of Theorem 1 of arXiv:2002.08953v2 for details.
     block = chain(3.1 * kron(X, Y), put(1 => H), -0.3 * kron(Z, Z))
     apply!(block, s)
     ```
+
   - `k::Int`: The locality of the observables which expected values will be estimated using these classical shadows.
     "IIXIZ" is a 2 local observable.
   - `M::Int`: The number of observables which expected values will be estimated using these classical shadows.
@@ -104,6 +106,7 @@ See formal version of Theorem 1 of arXiv:2002.08953v2 for details.
     block = chain(3.1 * kron(X, Y), put(1 => H), -0.3 * kron(Z, Z))
     apply!(block, s)
     ```
+
   - `observables::Set{String}`: the set of Pauli string observables for which we estimate the
     expectation values in `state`.
   - `precision::Float64`: the approximate additive error of the predicitons with respect to
