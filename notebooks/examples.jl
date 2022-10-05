@@ -7,9 +7,9 @@ using InteractiveUtils
 # ╔═╡ 320355b8-dc20-4c5b-a99d-69827b554923
 # ╠═╡ show_logs = false
 begin
-	using Pkg;
-	Pkg.activate(".")
-	
+    using Pkg
+    Pkg.activate(".")
+
     using QuantumMeasurements
     using Yao
     using YaoPlots
