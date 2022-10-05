@@ -1,11 +1,15 @@
 ### A Pluto.jl notebook ###
-# v0.19.8
+# v0.19.12
 
 using Markdown
 using InteractiveUtils
 
 # ╔═╡ 320355b8-dc20-4c5b-a99d-69827b554923
+# ╠═╡ show_logs = false
 begin
+	using Pkg;
+	Pkg.activate(".")
+	
     using QuantumMeasurements
     using Yao
     using YaoPlots
@@ -174,12 +178,12 @@ end
 
 # ╔═╡ Cell order:
 # ╠═320355b8-dc20-4c5b-a99d-69827b554923
-# ╠═9cb9f01c-2920-11ed-331b-337a297c8f86
+# ╟─9cb9f01c-2920-11ed-331b-337a297c8f86
 # ╟─5ce95f76-dd5a-4660-b0d8-efdbdb2bad7c
 # ╠═fb361f36-b364-4e2e-a683-b71ac2a84aa8
-# ╠═1b7e5d77-c459-44cd-a595-96fd928772ff
+# ╟─1b7e5d77-c459-44cd-a595-96fd928772ff
 # ╠═9fc0c652-ee37-4eb0-bc7f-92e187308776
-# ╠═2a1aff7f-56db-444c-932a-26b91522c9ba
+# ╟─2a1aff7f-56db-444c-932a-26b91522c9ba
 # ╠═774be95b-a95d-48bd-93c2-b097d7ed7d9a
 # ╠═11e9a310-0ee9-4166-bb49-d8d5f402a9f1
 # ╠═5c2e4a5f-e019-4a34-956f-9d920a0fdd80
@@ -189,6 +193,6 @@ end
 # ╠═14a7d8ef-8258-4a2a-ae93-27f7e349cd3f
 # ╟─394c2791-e4bc-422a-871f-124c5cf78504
 # ╠═611917b4-2d06-4a09-926c-0e65c1d4f4b8
-# ╠═97d5602f-fc4e-4408-85d3-7a3b3d147ae4
+# ╟─97d5602f-fc4e-4408-85d3-7a3b3d147ae4
 # ╠═a32c3bda-b88b-403d-9d6d-ada7f33f7f45
 # ╠═215182bf-3a50-4714-887f-cdb8d86f7d7a
