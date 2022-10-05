@@ -26,6 +26,6 @@ end
 @testset "Can create Hamiltonians as sum of scaled Pauli strings" begin
     @test 2 * pauli_string(X) isa Any
     @test pauli_string(X) + pauli_string(Y) isa Any
-    @test 3 * pauli_string(X, I2, Y) + 4.5 * pauli_string(3, 2 => Z) -
-          pauli_string(Y, I2, I2) isa Any
+    @test 3 * pauli_string(X, I2, Y) + 4.5 * pauli_string(3, 2 => Z) - pauli_string(Y, I2, I2) isa
+        Any
 end

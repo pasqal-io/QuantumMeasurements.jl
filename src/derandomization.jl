@@ -1,7 +1,7 @@
 using Random: AbstractRNG, GLOBAL_RNG
 
 """
-	hits(obs, op)
+    hits(obs, op)
 
 Return wether operator `op` hits observable `obs`.
 
@@ -24,7 +24,7 @@ function hits(obs::String, op::String)::Bool
 end
 
 """
-	weight(o)
+    weight(o)
 
 Returns the weight of the given PauliId string.
 """
@@ -42,15 +42,13 @@ measurements `measurements` over a total budget `M`, for an additive error `ε`.
 See the paper to choose `M` and `ε` correctly.
 
 Example:
+
 ```
     partial_confidence_bound_expectation(Set(["XIZ"]), ["XXX", "YYZ", "X"], 4, 0.5)
 ```
 """
 function partial_confidence_bound_expectation(
-    obs::Set{String},
-    measurements::Vector{String},
-    M::Int,
-    ε::Float64,
+    obs::Set{String}, measurements::Vector{String}, M::Int, ε::Float64
 )::Float64
     n = collect(obs)[1] |> length # number of qubits inferred from the observable list
     nu = 1 - exp(-(ε^2) / 2)
@@ -61,11 +59,11 @@ function partial_confidence_bound_expectation(
 
     for o in obs
         # 1. Fixed measurements
-        exp1 = sum([hits(o, meas) for meas in measurements[1:m-1]])
+        exp1 = sum([hits(o, meas) for meas in measurements[1:(m - 1)]])
         contrib1 = exp(-ε^2 / 2 * exp1)
 
         # 2. Partially fixed measurement
-        contrib2 = 1 - nu * hits(o[1:k], last(measurements)) * 3.0^(-weight(o[k+1:n]))
+        contrib2 = 1 - nu * hits(o[1:k], last(measurements)) * 3.0^(-weight(o[(k + 1):n]))
 
         # 3. Unspecified measurements
         contrib3 = (1 - nu * 3.0^(-weight(o)))^(M - m)
@@ -93,7 +91,7 @@ function derandomization(obs::Set{String}, M::Int, ε::Float64)::Vector{String}
             return [W]
         end
         if length(P[end]) < n
-            return [P[1:end-1]; P[end] * W]
+            return [P[1:(end - 1)]; P[end] * W]
         else
             return [P; W]
         end
@@ -101,8 +99,7 @@ function derandomization(obs::Set{String}, M::Int, ε::Float64)::Vector{String}
     P♯::Vector{String} = []
     while length(foldl(*, P♯)) < n * M
         W = argmin(
-            W -> partial_confidence_bound_expectation(obs, _extend(P♯, W), M, ε),
-            ["X", "Y", "Z"],
+            W -> partial_confidence_bound_expectation(obs, _extend(P♯, W), M, ε), ["X", "Y", "Z"]
         )
         P♯ = _extend(P♯, W)
     end
@@ -110,9 +107,7 @@ function derandomization(obs::Set{String}, M::Int, ε::Float64)::Vector{String}
 end
 
 function check_confidence_bound(
-    obs::Set{String},
-    measurements::Vector{String},
-    ε::Float64,
+    obs::Set{String}, measurements::Vector{String}, ε::Float64
 )::Tuple{Bool,Float64}
     a = sum(exp(-(ε^2 / 2) * sum(hits.(o, measurements))) for o in obs)
     δ = 2 * a
@@ -120,10 +115,7 @@ function check_confidence_bound(
 end
 
 function expect_derand(
-    reg::AbstractRegister,
-    obs::String,
-    ops::Vector{String};
-    rng::AbstractRNG = GLOBAL_RNG,
+    reg::AbstractRegister, obs::String, ops::Vector{String}; rng::AbstractRNG=GLOBAL_RNG
 )::Float64
     res = 0
     n = length(obs)
@@ -150,7 +142,7 @@ function expect_derand(
     reg::AbstractRegister,
     observables::Set{String},
     measurements::Vector{String};
-    rng::AbstractRNG = GLOBAL_RNG,
+    rng::AbstractRNG=GLOBAL_RNG,
 )::Dict{String,Float64}
     Dict(o => expect_derand(reg, o, measurements; rng) for o in observables)
 end

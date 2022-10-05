@@ -6,9 +6,8 @@ using LinearAlgebra, Statistics
 
 Represent a single classical shadow of a state which consists in a measurement and
 a unitary gate that has been applied before the measurement.
-`gate` is the unitary gate that had been applied before the measurement which result is `measure`. 
+`gate` is the unitary gate that had been applied before the measurement which result is `measure`.
 `gate` is represented by the n factors of its kronecker factorization.
-
 """
 struct Shadow
     n_qubits::Int
@@ -17,27 +16,25 @@ struct Shadow
 
     function Shadow(
         state::AbstractRegister;
-        noise_model::Noise = Noise(identity, identity),
-        rng::AbstractRNG = GLOBAL_RNG,
+        noise_model::Noise=Noise(identity, identity),
+        rng::AbstractRNG=GLOBAL_RNG,
     )
         n = nqubits(state)
         gate = random_clifford_gate(n; rng)
         b = pauli_measure(gate, state; noise_model)
         new(n, gate, b)
     end
-
 end
 
 """
-	Calibration
+    Calibration
 
 Store the coeffcients necessary to compute the inverse of the noisy protocol measurement (seen as a quantum channel).
 To eachbit string of {0,1}ⁿ corresponds a coeffcient.
 See equations (15) and (16) of arXiv:2002.08953v2 for more details.
 
-The inner constructor returns a `Calibration` where every bitstring of the argument `bit_strings` 
+The inner constructor returns a `Calibration` where every bitstring of the argument `bit_strings`
 is added to the dictionary but with a corresponding value set to 0.
-
 """
 struct Calibration
     n_qubits::Int
@@ -52,7 +49,6 @@ struct Calibration
     function Calibration(n::Int)
         new(n, Dict{Array{Int},Float64}())
     end
-
 end
 
 """
@@ -60,7 +56,6 @@ end
 
 For each bitstring in the dictionary of `calibration` compute the coeffcient corresponding to the `shadow`
 and add it to the existing value. In average this computation equals the factors of the inverse channel.
-
 """
 function add_single_calibration!(noise_shadow::Shadow, calibration::Calibration)
     b = noise_shadow.measure #Noisy measurement from a known state (usually the zero state)
@@ -69,10 +64,11 @@ function add_single_calibration!(noise_shadow::Shadow, calibration::Calibration)
 
     #Results of noisy measurements allow to compute noise calibration coefficients from these factors
     corelation_factors = [
-        b[j] == 0 ?
-        [1, 0]' * Matrix(mat(gate[j])) * [1 0; 0 -1] * Matrix(mat(gate[j]))' * [1, 0] :
-        [0, 1]' * Matrix(mat(gate[j])) * [1 0; 0 -1] * Matrix(mat(gate[j]))' * [0, 1]
-        for j = 1:n
+        if b[j] == 0
+            [1, 0]' * Matrix(mat(gate[j])) * [1 0; 0 -1] * Matrix(mat(gate[j]))' * [1, 0]
+        else
+            [0, 1]' * Matrix(mat(gate[j])) * [1 0; 0 -1] * Matrix(mat(gate[j]))' * [0, 1]
+        end for j = 1:n
     ]
 
     for bit_string in keys(calibration.coefficients)
@@ -91,7 +87,6 @@ end
 
 For each bitstring in the dictionary of `calibration` compute the coeffcient corresponding to the `shadow`
 by calculating the mean of coeffcients computed for each shadow of the array `noise_shadows`.
-
 """
 function mean_calibration!(noise_shadows::Array{Shadow}, calibration::Calibration)
     R = length(noise_shadows)
@@ -101,7 +96,6 @@ function mean_calibration!(noise_shadows::Array{Shadow}, calibration::Calibratio
     for bit_string in keys(calibration.coefficients)
         calibration.coefficients[bit_string] /= R
     end
-
 end
 
 """
@@ -109,13 +103,9 @@ end
 
 Return a Calibration computing each coeffcient corresponding to a bitstring of `bit_string` threw
 a median of mean estimation splitting the shadows of the array `noise_shadows` into `K` equally sized parts.
-
 """
 function Calibration(
-    noise_shadows::Array{Shadow},
-    bit_strings::Set{Array{Int}},
-    Nc::Int,
-    Kc::Int,
+    noise_shadows::Array{Shadow}, bit_strings::Set{Array{Int}}, Nc::Int, Kc::Int
 )::Calibration
     n = first(noise_shadows).n_qubits
     calibrate!(Calibration(n), bit_strings, noise_shadows, Nc, Kc)
@@ -126,7 +116,6 @@ end
 
 Modify and return the argument `calibration` computing each coeffcient corresponding to a bitstring of `bit_string` threw
 a median of mean estimation splitting the shadows of the array `noise_shadows` into `K` equally sized parts.
-
 """
 function calibrate!(
     calibration::Calibration,
@@ -138,11 +127,12 @@ function calibrate!(
     mean_calibrations = Array{Calibration}(undef, Kc)
     for t = 1:Kc
         mean_calibrations[t] = Calibration(bit_strings)
-        mean_calibration!(noise_shadows[(t-1)*Nc+1:t*Nc], mean_calibrations[t])
+        mean_calibration!(noise_shadows[((t - 1) * Nc + 1):(t * Nc)], mean_calibrations[t])
     end
     for bit_string in bit_strings
-        calibration.coefficients[bit_string] =
-            median([mean_calibrations[t].coefficients[bit_string] for t = 1:Kc])
+        calibration.coefficients[bit_string] = median([
+            mean_calibrations[t].coefficients[bit_string] for t = 1:Kc
+        ])
     end
     calibration
 end
@@ -151,12 +141,8 @@ end
     random_clifford_gate(n)
 
 Generate an array of `n` random unitary Clifford gates.
-
 """
-function random_clifford_gate(
-    n::Int;
-    rng::AbstractRNG = GLOBAL_RNG,
-)::Array{Yao.AbstractBlock}
+function random_clifford_gate(n::Int; rng::AbstractRNG=GLOBAL_RNG)::Array{Yao.AbstractBlock}
     gate = Array{Yao.AbstractBlock}(undef, n)
     for j = 1:n
         U1 = pauli_from_char[rand(rng, ('I', 'X', 'Y', 'Z'))]
@@ -167,7 +153,7 @@ function random_clifford_gate(
 end
 
 """
-	pauli_measure(gates, s; noise_model)
+    pauli_measure(gates, s; noise_model)
 
 Return a measure of the state `s` after applying the unitary gate represented by the array `gates` of its kronecker factors.
 It applies the noise functions to the state after the unitary gate and to the measurement result.
@@ -180,15 +166,14 @@ bit_flip_noise(0.1) returns a noise_model that flips each qubit with propability
 '''jldoctest
 julia> pauli_measure(random_clifford_gate(2), ArrayReg(bit"00"), noise_model=bit_flip_noise(0.1))
 2-element Vector{Int8}:
- 1
- 0
+1
+0
 '''
-
 """
 function pauli_measure(
     gates::Array{Yao.AbstractBlock},
     s::AbstractRegister;
-    noise_model::Noise = Noise(identity, identity),
+    noise_model::Noise=Noise(identity, identity),
 )::Array{Int8}
     state = copy(s)
     n = nqubits(state)
@@ -209,18 +194,17 @@ function pauli_measure(
 end
 
 """
-	classical_shadows(state, R; noise_model, rng)
+    classical_shadows(state, R; noise_model, rng)
 
 Generate an array of `R` classical snapshots of an unknown `state`.
 It gives a classical representation of `state` that can be used
 to predict expection values of any set of observables.
-
 """
 function classical_shadows(
     state::AbstractRegister,
     R::Int;
-    noise_model::Noise = Noise(identity, identity),
-    rng::AbstractRNG = GLOBAL_RNG,
+    noise_model::Noise=Noise(identity, identity),
+    rng::AbstractRNG=GLOBAL_RNG,
 )::Array{Shadow}
     [Shadow(state; noise_model, rng) for _ = 1:R]
 end
@@ -228,14 +212,14 @@ end
 """
     observables_bit_strings(observables)   
 
-Return a set containing only the bitstrings of {0,1}ⁿ that contribute to the estimation of the expected value of 
+Return a set containing only the bitstrings of {0,1}ⁿ that contribute to the estimation of the expected value of
 at least one observable in the set `observables`. A bitstring contribute to the estimation of an observable's expected value
 if there is no 1 in the bitstring in the same position as a I in the observable.
 
 # Examples
 
 ```jldoctest
-julia> QuantumMeasurements.observables_bit_strings(Set(["XIII","IIZY"]))
+julia> QuantumMeasurements.observables_bit_strings(Set(["XIII", "IIZY"]))
 Set{Array{Int64}} with 5 elements:
   [0, 0, 0, 1]
   [0, 0, 0, 0]
@@ -243,14 +227,13 @@ Set{Array{Int64}} with 5 elements:
   [0, 0, 1, 0]
   [1, 0, 0, 0]
 ```
-
 """
 function observables_bit_strings(observables::Set{String})::Set{Array{Int}}
     s = Set{Array{Int}}()
     n = length(first(observables))
     for o in observables #For each observable in observables we add to the set s the bitstrings that contribute to the estimation of its expected value.
         k = weight(o)
-        bit_string = [zeros(Int, n) for _ = 1:2^k]
+        bit_string = [zeros(Int, n) for _ = 1:(2^k)]
 
         non_I = Array{Int}(undef, k) #Index of qubits where the observable o acts non trivally.
         i = 1
@@ -260,9 +243,12 @@ function observables_bit_strings(observables::Set{String})::Set{Array{Int}}
                 i += 1
             end
         end
-        bit = bitarray([0:2^k-1...], k) #At an index where the observable's factor is not I, the bitstring contribute to the inverse channel
-        #whether it is 0 or 1, so, after setting the bits in the same poistion as I to 0, we generate all the possibilities for the other positions.
-        for z = 1:2^k
+        # At an index where the observable's factor is not I, the bitstring
+        # contribute to the inverse channel whether it is 0 or 1, so, after
+        # setting the bits in the same poistion as I to 0, we generate all the
+        # possibilities for the other positions.
+        bit = bitarray(collect(0:(2^k - 1)), k) 
+        for z = 1:(2^k)
             for j = 1:k
                 if bit[j, z]
                     bit_string[z][non_I[j]] = 1
@@ -276,14 +262,14 @@ function observables_bit_strings(observables::Set{String})::Set{Array{Int}}
 end
 
 """
-	bit_string_k(n, k)
+    bit_string_k(n, k)
 
 Return an Set that contains every bitstring of {0, 1}ⁿ which number of 1 is less or equal to `k`.
 
 # Examples
 
 ```jldoctest
-julia> QuantumMeasurements.bit_string_k(3,2)
+julia> QuantumMeasurements.bit_string_k(3, 2)
 Set{Array{Int64}} with 7 elements:
   [0, 1, 0]
   [1, 0, 1]
@@ -302,21 +288,16 @@ function bit_string_k(n::Int, k::Int)::Set{Array{Int}}
 end
 
 """
-	recursive_bit_string_k(string, lastOne, nbOne, k, bit_strings)
+    recursive_bit_string_k(string, lastOne, nbOne, k, bit_strings)
 
 Add to the array `bit_strings` all the bit strings obtained from `string` replacing one 0 after the last 1 of `string`
-
 """
 function recursive_bit_string_k(
-    string::Array{Int},
-    lastOne::Int,
-    NbOne::Int,
-    k::Int,
-    bit_strings::Set{Vector{Int}},
+    string::Array{Int}, lastOne::Int, NbOne::Int, k::Int, bit_strings::Set{Vector{Int}}
 )
     n = length(string)
     if !(lastOne >= n || NbOne >= k)
-        for i = lastOne+1:n
+        for i = (lastOne + 1):n
             new_string = copy(string)
             new_string[i] = 1
             push!(bit_strings, new_string)

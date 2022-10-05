@@ -17,7 +17,6 @@ begin
     using YaoPlots
     using LinearAlgebra
     using Plots
-
 end
 
 # ╔═╡ 9cb9f01c-2920-11ed-331b-337a297c8f86
@@ -43,7 +42,6 @@ We now create a parametrized space of state using $p = 6$ layers of rotation gat
 We first generate $p*n$ axis of rotations
 """
 
-
 # ╔═╡ 9fc0c652-ee37-4eb0-bc7f-92e187308776
 begin
     n = 3
@@ -59,7 +57,7 @@ Then we need a function which maps a matrix of $n*p$ angles to a state. To do so
 # ╔═╡ 774be95b-a95d-48bd-93c2-b097d7ed7d9a
 begin
     function entangling_gate()::Yao.AbstractBlock
-        chain(n, control(n, 1 => Z), chain(control(i, i + 1 => Z) for i = 1:n-1))
+        chain(n, control(n, 1 => Z), chain(control(i, i + 1 => Z) for i = 1:(n - 1)))
     end
 
     function rotation_gate(angle::Matrix{Float64}, l::Int)::Yao.AbstractBlock
@@ -78,7 +76,6 @@ begin
     YaoPlots.plot(unitary_gate(π * 2 * rand(Float64, (n, p))))
 end
 
-
 # ╔═╡ 11e9a310-0ee9-4166-bb49-d8d5f402a9f1
 md"""
 We now use classical shadows to evaluate the energy of one state defined by the matrix angle. We will use $4*1200$ classical shadows :
@@ -96,7 +93,6 @@ begin
     end
 end
 
-
 # ╔═╡ ac2a60ae-2f5c-4169-b370-e50cd4a38922
 md"""
 To minimize the energy the gradient of the energy is required. A litteral expression can be found. See arXiv:1811.11184v1 for more details.
@@ -104,7 +100,6 @@ To minimize the energy the gradient of the energy is required. A litteral expres
 
 # ╔═╡ 4f6a846b-2766-4a56-b129-e4d1cac5a652
 begin
-
     function gradient(angle::Matrix{Float64})::Matrix{Float64}
         [gradient_element(angle, i, l) for i = 1:n, l = 1:p]
     end
@@ -118,7 +113,6 @@ begin
         (Ep - Em) / 2
     end
 end
-
 
 # ╔═╡ 3c37e8fa-2740-4d7c-af65-a01945c1f70d
 md"""
@@ -144,12 +138,12 @@ To evaluate the algorithm we need to compute the theorical groundstate energy.
 begin
     H_matrix = zeros(Complex, (2^n, 2^n))
     for H_term in H_set
-        global H_matrix +=
-            Matrix(mat(kron([QuantumMeasurements.pauli_from_char[H_term[j]] for j = 1:n]...)))
+        global H_matrix += Matrix(
+            mat(kron([QuantumMeasurements.pauli_from_char[H_term[j]] for j = 1:n]...))
+        )
     end
 
     Eth = eigvals(H_matrix)[1]
-
 end
 
 # ╔═╡ 97d5602f-fc4e-4408-85d3-7a3b3d147ae4
@@ -170,11 +164,9 @@ begin
     end
 end
 
-
 # ╔═╡ 215182bf-3a50-4714-887f-cdb8d86f7d7a
 begin
-
-    Plots.plot(1:max_iter, E_trajectory, lab = "E-Eth")
+    Plots.plot(1:max_iter, E_trajectory, lab="E-Eth")
     xlabel!("iteration")
     ylabel!("E-Eth")
 end
