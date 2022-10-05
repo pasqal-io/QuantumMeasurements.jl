@@ -12,7 +12,6 @@ begin
 
     using QuantumMeasurements
     using Yao
-
 end
 
 # ╔═╡ 2b9cb58b-5162-4aba-919d-9fb6c1d38146
@@ -159,7 +158,7 @@ Let's now compute the expectation values of the observables defined above using 
 # ╔═╡ e7e4a1a8-eebd-4304-88f8-1ce10b80a7f6
 begin
     all_obs = [O1, O2, O3]
-    expect_vals_tomo = expect_tomography(all_obs, circuit, budget = budget)
+    expect_vals_tomo = expect_tomography(all_obs, circuit, budget=budget)
 end
 
 # ╔═╡ 28a439fd-ac55-4c23-bacb-68571fce1e4a
@@ -239,7 +238,6 @@ begin
     estimate_expect_shadows(ρ_6, obs_6, 0.1)
 end
 
-
 # ╔═╡ d069a1cd-7af7-4499-9122-aeae3fd3832c
 md"""
 We can observe that 217596 classical shadows have been used as for previous estimations
@@ -292,7 +290,6 @@ We then determine our observables and estimate their expected values:
 begin
     obs_set = Set(["IIIX", "IIXI", "IIZZ"])
     estimate_from_shadows(sh, obs_set, 0.1)
-
 end
 
 # ╔═╡ 80ff8bf0-1917-4971-95e5-a86add6f7be1
@@ -330,9 +327,7 @@ begin
     end
 
     fidelity(ρ, ρ_matrix)
-
 end
-
 
 # ╔═╡ 2e3cfbff-bb55-4cce-b7c2-75f5638b2d13
 md"We can eavluate the fidelity between the state and its reconstruction :"
@@ -359,14 +354,12 @@ begin
     n_qubit = 3
     average_measure = zeros(Float64, n_qubit)
     for i = 1:N
-
         zero = zero_state(n_qubit)
         bf.noise_circuit(zero)
         average_measure += measure(zero)[1][1:n_qubit]
     end
     average_measure /= N
 end
-
 
 # ╔═╡ 610844f6-3593-496f-9249-45e665bf8189
 md"""
@@ -398,7 +391,6 @@ begin
     end
     average_meas /= N
 end
-
 
 # ╔═╡ c751189e-05e8-4e6e-aa7d-41d1ba104dfe
 md"""
@@ -437,8 +429,7 @@ This protocol can be easily used using the keyword argument `robust` set to true
 
 # ╔═╡ 59e89559-1df4-4d7a-bfdd-e445b634a78d
 begin
-    robust_expected_vals =
-        estimate_expect_shadows(s, observables, 0.1; noise_model, robust = true)
+    robust_expected_vals = estimate_expect_shadows(s, observables, 0.1; noise_model, robust=true)
     println("\n Gap between estimations and true values")
     for o in observables
         println(abs(robust_expected_vals[o] - noisy_expected_vals_true[o]))
@@ -481,7 +472,6 @@ begin
     #Determine some observables'expected values :
     calibration = calibrate(obs, noise_shadows, 15000, 10)
     estimate_from_shadows(classical_shadows, calibration, obs, 0.15)
-
 end
 
 # ╔═╡ 30ad58bb-6201-4c49-8192-5fd4495b4781
@@ -515,11 +505,8 @@ R = 100000
 # ╔═╡ c75d5423-5ad6-445e-b35b-b73f4ab1dd0a
 begin
     function fidelity_compare(
-        rate::Float64,
-        state::AbstractRegister,
-        R::Int,
+        rate::Float64, state::AbstractRegister, R::Int
     )::Tuple{Float64,Float64}
-
         noise_model = bit_flip_noise(rate)
         n = nqubits(state)
 
@@ -531,12 +518,7 @@ begin
 
         return (fidelity(s, standard), fidelity(s, robust))
     end
-
 end
-
-
-
-
 
 # ╔═╡ 355d74dc-3bac-4faf-89cd-5ad469e1612f
 begin
@@ -548,7 +530,6 @@ begin
     end
 end
 
-
 # ╔═╡ 3bd41953-b7ba-4942-a7fb-ab3d3d270917
 begin
     Pkg.add("Plots")
@@ -556,9 +537,9 @@ begin
     plot(
         rates,
         [standard, robust],
-        lab = ["Standard" "Robust"],
-        markershapes = :circle,
-        legend_position = (0.85, 0.8),
+        lab=["Standard" "Robust"],
+        markershapes=:circle,
+        legend_position=(0.85, 0.8),
     )
     ylabel!("Fidelity")
     xlabel!("bit flip rate")
@@ -568,7 +549,6 @@ end
 md"Results can now be displayed :"
 
 # ╔═╡ e0f58157-86e7-4666-b6d2-46bb7cf6c17e
-
 
 # ╔═╡ Cell order:
 # ╠═725a9ee8-b419-4de7-a27a-f3ffb12c5033

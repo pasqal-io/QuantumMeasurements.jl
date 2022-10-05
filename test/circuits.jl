@@ -2,7 +2,6 @@ using QuantumMeasurements
 using Test
 
 @testset "YaoConverter" begin
-
     n_qubits = 2
 
     # create a random circuit
@@ -19,5 +18,4 @@ using Test
     # chain all together
     push!(circuit, chain(n_qubits, layer_1, layer_2, layer_3, control_gate))
     plot(circuit)
-
 end

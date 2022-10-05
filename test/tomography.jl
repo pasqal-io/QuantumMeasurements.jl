@@ -1,5 +1,4 @@
 @testset "Tomography with Z basis only" begin
-
     budget = 1000000
     n_qubits = 2
 
@@ -14,19 +13,16 @@
     O2 = pauli_string(Z, Z)
 
     observables = [O1, O2]
-    values_tomo = expect_tomography(observables, circuit, budget = budget)
+    values_tomo = expect_tomography(observables, circuit, budget=budget)
 
     ψ0 = zero_state(n_qubits)
     ψ = apply(ψ0, circuit)
     values_exact = [expect(O1, ψ), expect(O2, ψ)]
 
-    @test isapprox(values_tomo, values_exact, rtol = 1e-2, atol = 1e-2)
-
+    @test isapprox(values_tomo, values_exact, rtol=1e-2, atol=1e-2)
 end
 
-
 @testset "Tomography complete operators" begin
-
     budget = 1000000
     n_qubits = 5
 
@@ -42,12 +38,11 @@ end
     O3 = 2.0 * pauli_string(n_qubits, 1 => Y, 3 => Z) + 3.0 * pauli_string(X, X, Z, I2, I2)
 
     observables = [O1, O2, O3]
-    values_tomo = expect_tomography(observables, circuit, budget = budget)
+    values_tomo = expect_tomography(observables, circuit, budget=budget)
 
     ψ0 = zero_state(n_qubits)
     ψ = apply(ψ0, circuit)
     values_exact = [expect(O1, ψ), expect(O2, ψ), expect(O3, ψ)]
 
-    @test isapprox(values_tomo, values_exact, rtol = 1e-2, atol = 1e-2)
-
+    @test isapprox(values_tomo, values_exact, rtol=1e-2, atol=1e-2)
 end

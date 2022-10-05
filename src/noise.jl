@@ -6,7 +6,6 @@ Simulate a noisy operation and a noisy measurement.
 simulate a noisy gate.
 `noise_measure` is a function that takes a Array of 0 and 1 and modifies it to simulate
 a noisy measurement. It can also simulate a noisy gate followed by a noisy measurement as a whole.
-
 """
 struct Noise
     noise_circuit::Function
@@ -14,10 +13,9 @@ struct Noise
 end
 
 """
-	noise_composition(noise_models)
+    noise_composition(noise_models)
 
 Return a Noise struct which is a composition of each Noise of the array noise_models.
-
 """
 function noise_composition(noise_models::Array{Noise})::Noise
     function noise_circuit!(state::AbstractRegister)
@@ -34,11 +32,10 @@ function noise_composition(noise_models::Array{Noise})::Noise
 end
 
 """
-	bit_flip_noise(rate, subsystem)
+    bit_flip_noise(rate, subsystem)
 
 Return a Noise that randomly flip each qubit which index is in the array `subsystem` with probability `rate`.
 If subsystem is unspecified, the Noise acts on every single qubit of the state.
-
 """
 function bit_flip_noise(rate::T, subsystem::Array{Int})::Noise where {T<:Real}
     function noise!(state::AbstractRegister)
@@ -70,7 +67,6 @@ end
 
 Return a Noise that randomly depolarize each qubit which index is in the array `subsystem` with probability `rate`.
 If subsystem is unspecified, the Noise acts on every single qubit of the state.
-
 """
 function depolarization_noise(rate::T, subsystem::Array{Int})::Noise where {T<:Real}
     function noise!(state::AbstractRegister)
@@ -102,11 +98,10 @@ function depolarization_noise(rate::T)::Noise where {T<:Real}
 end
 
 """
-	amplitude_damping_noise(rate)
+    amplitude_damping_noise(rate)
 
-Return a Noise that change the measurement so that a result of 1 is changed to 0 
+Return a Noise that change the measurement so that a result of 1 is changed to 0
 with probability `rate` and result of 0 are unchanged.
-
 """
 function amplitude_damping_noise(rate::T)::Noise where {T<:Real}
     function noise!(measure::Array{Int})
@@ -122,10 +117,9 @@ function amplitude_damping_noise(rate::T)::Noise where {T<:Real}
 end
 
 """
-	amplitude_damping_noise_gate(rate)
+    amplitude_damping_noise_gate(rate)
 
 Return a function that change a qubit from the state 1 to 0 with probability `rate` and does not modifiy a qubit in state 0.
-
 """
 function amplitude_damping_noise_gate(rate::T)::Noise where {T<:Real}
     function noise!(state::AbstractRegister)
@@ -138,7 +132,7 @@ function amplitude_damping_noise_gate(rate::T)::Noise where {T<:Real}
         A(i, j) = chain(2 * n, control(i, j => rot(Y, θ)), control(j, i => X))
         B = chain(A(i, i + n) for i = 1:n)
         Λ = chain(Λ, B)
-        Λ = chain(Λ, Measure(2 * n, locs = n+1:2*n))
+        Λ = chain(Λ, Measure(2 * n, locs=(n + 1):(2 * n)))
 
         apply!(state, Λ)
     end
@@ -146,10 +140,9 @@ function amplitude_damping_noise_gate(rate::T)::Noise where {T<:Real}
 end
 
 """
-	X_error(θ)
+    X_error(θ)
 
 Return a Noise that apply a rotation of `θ` in the X axis to each qubit.
-
 """
 function X_error(θ::T)::Noise where {T<:Real}
     function noise!(state::AbstractRegister)

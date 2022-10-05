@@ -27,7 +27,6 @@ end
     @test weight("IXYZIXYZIXYZ") == 9
 end
 
-
 @testset "Confidence bound expectation" begin
     ε0 = √2
     ε1 = 0.987654321
@@ -114,7 +113,6 @@ end
         @test got ≈ want
     end
 end
-
 
 @testset "Derandomization" begin
     cases = [
