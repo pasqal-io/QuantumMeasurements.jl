@@ -6,18 +6,11 @@ using InteractiveUtils
 
 # ╔═╡ 320355b8-dc20-4c5b-a99d-69827b554923
 begin
-    using Pkg
-    Pkg.activate("..")
-    Pkg.instantiate()
-    Pkg.add("YaoPlots")
-    Pkg.add("Plots")
-
     using QuantumMeasurements
     using Yao
     using YaoPlots
     using LinearAlgebra
     using Plots
-
 end
 
 # ╔═╡ 9cb9f01c-2920-11ed-331b-337a297c8f86

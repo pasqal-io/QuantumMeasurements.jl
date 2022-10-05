@@ -1,6 +1,3 @@
-using Random: AbstractRNG, GLOBAL_RNG
-using LinearAlgebra, Statistics
-
 """
 	chain_inverse(Pauli, measure)
 

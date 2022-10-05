@@ -21,6 +21,8 @@ export estimate_from_shadows, calibrate
 using Yao
 using BitBasis
 
+using Random: AbstractRNG, GLOBAL_RNG
+
 include("observables.jl")
 include("circuits.jl")
 include("tomography.jl")

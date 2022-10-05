@@ -1,6 +1,3 @@
-using Random: AbstractRNG, GLOBAL_RNG
-using LinearAlgebra, Statistics
-
 """
 	number_samples(k, precision, probability, M, n; robust)
 

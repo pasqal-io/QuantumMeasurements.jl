@@ -1,5 +1,3 @@
-using Random: AbstractRNG, GLOBAL_RNG
-
 """
 	hits(obs, op)
 
