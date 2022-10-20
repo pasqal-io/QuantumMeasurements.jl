@@ -1,8 +1,9 @@
 import Base: promote_rule
 
-"""PauliGate is a the union type of Pauli matrices supplemented with the identity."""
+"""
+PauliGate is a the union type of Pauli matrices supplemented with the identity.
+"""
 const PauliGate = Union{I2Gate,XGate,YGate,ZGate}
-
 
 # Define the promote rules for subtypes of PauliGate. Vectors like [X,Y,Z] will
 # be of type Vector{PauliGate} instead of Vecctor{ConstantGate{1,2}}. Same thing
@@ -10,13 +11,12 @@ const PauliGate = Union{I2Gate,XGate,YGate,ZGate}
 # signature f(vs::Vararg{PauliGate}).
 promote_rule(::Type{S}, ::Type{T}) where {S<:PauliGate,T<:PauliGate} = PauliGate
 
-
-"""Construct a Pauli string block.
+"""
+Construct a Pauli string block.
 Enforces that it consists of Pauli operators acting on different qubits.
 """
 pauli_string(n::Int, vs::Vararg{Pair{Int,<:PauliGate}}) = Yao.kron(n, vs...)
 pauli_string(vs::Vararg{<:PauliGate}) = Yao.kron(vs...)
-
 
 struct PauliObservable
     n_qubits::Int
@@ -57,7 +57,6 @@ end
 @const_gate K = [1 im; im 1] / sqrt(2)
 
 @const_gate L = [1 0; 0 im]
-
 
 pauli_from_char = Dict(
     'I' => I2,

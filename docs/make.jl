@@ -1,7 +1,9 @@
 using QuantumMeasurements
 using Documenter
 
-DocMeta.setdocmeta!(QuantumMeasurements, :DocTestSetup, :(using QuantumMeasurements); recursive=true)
+DocMeta.setdocmeta!(
+    QuantumMeasurements, :DocTestSetup, :(using QuantumMeasurements); recursive=true
+)
 
 makedocs(;
     modules=[QuantumMeasurements],
@@ -17,12 +19,7 @@ makedocs(;
         edit_link="main",
         assets=String[],
     ),
-    pages=[
-        "Home" => "index.md",
-    ],
+    pages=["Home" => "index.md"],
 )
 
-deploydocs(;
-    repo="github.com/pasqal-io/QuantumMeasurements.jl",
-    devbranch="main",
-)
+deploydocs(; repo="github.com/pasqal-io/QuantumMeasurements.jl", devbranch="main")
