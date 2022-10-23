@@ -1,12 +1,6 @@
 name = "QuantumMeasurements"
 uuid = "e96aa542-2ecd-47f5-b1c3-6603a9726ad2"
-authors = [
-	"Sebastian Grijalva",
-	"Mario Dagrada",
-	"Louis Vignoli",
-	"Romain Martin",
-	"Niklas Heim"
-]
+authors = ["Sebastian Grijalva", "Mario Dagrada", "Louis Vignoli", "Romain Martin", "Niklas Heim"]
 version = "0.1.0"
 
 [deps]
@@ -23,6 +17,7 @@ YaoBlocks = "418bc28f-b43b-5e0b-a6e7-61bbc1a2c1df"
 YaoPlots = "32cfe2d9-419e-45f2-8191-2267705d8dbc"
 
 [compat]
+StatsBase = "0.33"
 julia = "1"
 
 [extras]
