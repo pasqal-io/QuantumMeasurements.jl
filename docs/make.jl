@@ -10,7 +10,8 @@ makedocs(;
     authors="Mario Dagrada <mario.dagrada@pasqal.com>, " *
             "Sebastian Grijalva <sebastian.grijalva@pasqal.com>, " *
             "Niklas Heim <heim.niklas@pasqal.com>, " *
-            "Louis Vignoli <louis.vignoli@pasqal.com>",
+            "Louis Vignoli <louis.vignoli@pasqal.com>" *
+            "Romain Martin",
     repo="https://github.com/pasqal-io/QuantumMeasurements.jl/blob/{commit}{path}#{line}",
     sitename="QuantumMeasurements.jl",
     format=Documenter.HTML(;
