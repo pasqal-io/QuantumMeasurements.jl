@@ -18,6 +18,46 @@ Enforces that it consists of Pauli operators acting on different qubits.
 pauli_string(n::Int, vs::Vararg{Pair{Int,<:PauliGate}}) = Yao.kron(n, vs...)
 pauli_string(vs::Vararg{<:PauliGate}) = Yao.kron(vs...)
 
+"""
+    PauliObs
+
+Represent a pauli observable storing only non identity terms.
+`n_qubits` is the number of qubits on which the observable acts.
+`pauli` is a dictionary which keys are the position of the non identity terms
+and values are the character refering to the pauli matrix (namely 'X', 'Y' or 'Z').
+"""
+struct PauliObs
+    n_qubits::Int
+    pauli::Dict{Int64, Char}
+
+    function PauliObs(obs::String)::PauliObs
+        n_qubits = length(obs)
+        pauli = Dict{Int64, Char}()
+        for i in 1:n_qubits
+            if obs[i] != 'I'
+                pauli[i] = obs[i]
+            end
+        end
+        new(n_qubits, pauli)
+    end
+
+    function Pauli(n_qubits::Int, pauli::Dict{Int64, Char})
+        new(n_qubits, pauli)
+    end
+end
+
+function PauliObs_to_string(obs::PauliObs)::String
+    string = collect("I"^obs.n_qubits)
+    for p in obs.pauli
+        string[p[1]] = p[2]
+    end
+    join(string)
+end
+
+function weight(pauli_observable::PauliObs)::Int
+    length(pauli_observable.pauli)
+end
+
 struct PauliObservable
     n_qubits::Int
     terms::Vector{AbstractBlock}
