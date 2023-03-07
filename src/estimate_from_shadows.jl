@@ -26,9 +26,9 @@ function estimate_from_shadows(
     nb_shadows = length(shadows)
     Re > nb_shadows ? Re = nb_shadows : Re
     Ne = Re ÷ Ke
-
+    pauli_observables = Set([PauliObs(o) for o in observables])
     println("Using $(Ne*Ke) classical shadows split into $Ke equally-sized parts")
-    estimate_set_obs(shadows, observables, Ne, Ke)
+    estimate_set_obs(shadows, pauli_observables, Ne, Ke)
 end
 
 """
@@ -98,12 +98,13 @@ used to generate the array `shadows`. Uses a median of mean estimation using `Ke
 function estimate_from_shadows(
     shadows::Vector{Shadow}, calibration::Calibration, observables::Set{String}, Re::Int, Ke::Int=1
 )::Dict{String,Float64}
+    pauli_observables = Set([PauliObs(o) for o in observables])
     nb_shadows = length(shadows)
     Re > nb_shadows ? Re = nb_shadows : Re
     Ne = Re ÷ Ke
 
     println("Using $(Ne*Ke) classical shadows split into $Ke equally-sized parts")
-    robust_estimate_set_obs(shadows, calibration, observables, Ne, Ke)
+    robust_estimate_set_obs(shadows, calibration, pauli_observables, Ne, Ke)
 end
 
 """
@@ -307,7 +308,8 @@ the estimation of observables' expected values are computed.
 function calibrate(
     observables::Set{String}, noise_shadows::Array{Shadow}, Nc::Int, Kc::Int
 )::Calibration
-    bit_strings = observables_bit_strings(observables)
+    pauli_observables = Set([PauliObs(o) for o in observables])
+    bit_strings = observables_bit_strings(pauli_observables)
     calibrate(bit_strings, noise_shadows, Nc, Kc)
 end
 

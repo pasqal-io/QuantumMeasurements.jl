@@ -210,52 +210,29 @@ end
     observables_bit_strings(observables)   
 
 Return a set containing only the bitstrings of {0,1}ⁿ that contribute to the estimation of the expected value of
-at least one observable in the set `observables`. A bitstring contribute to the estimation of an observable's expected value
-if there is no 1 in the bitstring in the same position as a I in the observable.
+at least one observable in the set `observables`. For a bit string to contribute to the estimation of one observable, 
+it must contains 0 in the same position as the identity terms of this observable and 1 in the other positions.
 
 # Examples
 
 ```jldoctest
-julia> QuantumMeasurements.observables_bit_strings(Set(["XIII", "IIZY"]))
+julia> QuantumMeasurements.observables_bit_strings(Set([QuantumMeasurements.PauliObs(o) for o in ["XIII", "IIZY"]]))
 Set{Array{Int64}} with 5 elements:
-  [0, 0, 0, 1]
-  [0, 0, 0, 0]
   [0, 0, 1, 1]
-  [0, 0, 1, 0]
   [1, 0, 0, 0]
 ```
 """
-function observables_bit_strings(observables::Set{String})::Set{Array{Int}}
-    s = Set{Array{Int}}()
-    n = length(first(observables))
-    for o in observables #For each observable in observables we add to the set s the bitstrings that contribute to the estimation of its expected value.
-        k = weight(o)
-        bit_string = [zeros(Int, n) for _ = 1:(2^k)]
+function observables_bit_strings(observables::Set{PauliObs})::Set{Array{Int}}
+    return Set([observable_bit_string(o) for o in observables])
+end
 
-        non_I = Array{Int}(undef, k) #Index of qubits where the observable o acts non trivally.
-        i = 1
-        for j = 1:n
-            if o[j] != 'I'
-                non_I[i] = j
-                i += 1
-            end
+function observable_bit_string(observable::PauliObs)::Array{Int}
+    n = observable.n_qubits
+    bit_string = zeros(Int, n)
+        for j in keys(observable.pauli)
+            bit_string[j] = 1
         end
-        # At an index where the observable's factor is not I, the bitstring
-        # contribute to the inverse channel whether it is 0 or 1, so, after
-        # setting the bits in the same poistion as I to 0, we generate all the
-        # possibilities for the other positions.
-        bit = bitarray(collect(0:(2^k - 1)), k)
-        for z = 1:(2^k)
-            for j = 1:k
-                if bit[j, z]
-                    bit_string[z][non_I[j]] = 1
-                end
-            end
-        end
-
-        push!(s, bit_string...)
-    end
-    return s
+    return bit_string
 end
 
 """

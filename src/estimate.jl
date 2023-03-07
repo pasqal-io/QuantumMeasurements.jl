@@ -108,8 +108,9 @@ function estimate_expect_shadows(
     robust::Bool=false,
     rng::AbstractRNG=GLOBAL_RNG,
 )::Dict{String,Float64}
-    M = length(observables)
-    k = max(weight.(observables)...)
+    pauli_observables = Set([PauliObs(o) for o in observables])
+    M = length(pauli_observables)
+    k = max(weight.(pauli_observables)...)
     n = nqubits(state)
 
     Ne, Ke, Nc, Kc = number_samples(k, precision, probability, M, n; robust)
@@ -125,14 +126,14 @@ function estimate_expect_shadows(
         noise_shadows_list = classical_shadows(zero_state(n), Nc * Kc; noise_model, rng)
         println("Noise shadows generated")
         println("Computing calibration coefficients")
-        bit_strings = observables_bit_strings(observables)
+        bit_strings = observables_bit_strings(pauli_observables)
         f = Calibration(noise_shadows_list, bit_strings, Nc, Kc)
         println("Calibration done")
 
         println("Estimating expectation values")
-        return robust_estimate_set_obs(shadows_list, f, observables, Ne, Ke)
+        return robust_estimate_set_obs(shadows_list, f, pauli_observables, Ne, Ke)
     else
         println("Estimating expectation values")
-        return estimate_set_obs(shadows_list, observables, Ne, Ke)
+        return estimate_set_obs(shadows_list, pauli_observables, Ne, Ke)
     end
 end
